@@ -563,16 +563,26 @@
     }
 
     /* Project 4 logo */
-    .proj-logo-wrap {
-      width: 50%;
-      min-height: 140px;
-      background: var(--card);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.5s;
-    }
+    /* Project 4 logo - Optimized for all screens */
+.proj-logo-wrap {
+  width: 100%;
+  min-height: 280px; /* Matched to Project 1, 2, and 3 for symmetry */
+  background: var(--card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.5s;
+  overflow: hidden;
+}
 
+.proj-logo-wrap img {
+  width: 100%;
+  height: 100%;
+  max-width: 220px; /* Prevents the logo from becoming huge on desktop */
+  max-height: 220px;
+  object-fit: contain; /* Ensures the logo isn't cropped */
+  padding: 1.5rem;
+}
     .proj-logo-inner {
       width: 130px;
       height: 130px;
@@ -733,7 +743,7 @@
       .slideshow,
       .yt-wrap,
       .proj-logo-wrap {
-        min-height: 100px;
+        min-height: 200px;
       }
     }
     .home-photo {
@@ -993,27 +1003,28 @@
 
       <!-- PROJECT 4 — Logo only -->
       <div class="project-card reveal">
-        <div class="proj-logo-wrap">
-          <img src="assets/peacheslogo1.png" alt="Peaches Logo">
-        </div>
-        <div class="project-info">
-          <div>
-            <p class="project-number">Project 04</p>
-            <h3 class="project-title">Peaches!</h3>
-            <p class="project-desc">An offline Python tool that converts vocal recordings (humming or singing) into MIDI sequences using the OneBitPitch (OBP) algorithm for efficient pitch detection. Efficient Pitch Detection: Uses OneBitPitch algorithm with 1-bit quantization and autocorrelation Audio Preprocessing: Automatic noise reduction and bandpass filtering MIDI Export: Converts detected pitches to clean MIDI note sequences Visualization: Generate plots of pitch contours and MIDI notes Customizable: Adjustable frequency ranges, tempo, and note duration</p>
-          </div>
-          <div class="project-footer">
-            <div class="project-tags"><span class="tag">Python</span><a class="project-link" href="https://github.com/grabzilla/PEACHES"
-              target="_blank">View project <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
-                <polyline points="15 3 21 3 21 9" />
-                <line x1="10" y1="14" x2="21" y2="3" />
-              </svg></a>
-          </div>
-        </div>
-      </div>
-
+  <div class="proj-logo-wrap">
+    <img src="assets/peacheslogo1.png" alt="Peaches Logo">
+  </div>
+  <div class="project-info">
+    <div>
+      <p class="project-number">Project 04</p>
+      <h3 class="project-title">Peaches!</h3>
+      <p class="project-desc">An offline Python tool that converts vocal recordings (humming or singing) into MIDI sequences using the OneBitPitch (OBP) algorithm...</p>
     </div>
+    <div class="project-footer">
+      <div class="project-tags"><span class="tag">Python</span></div>
+      <a class="project-link" href="https://github.com/grabzilla/PEACHES" target="_blank">
+        View project 
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
+          <polyline points="15 3 21 3 21 9" />
+          <line x1="10" y1="14" x2="21" y2="3" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</div>
   </section>
 
   <footer>
