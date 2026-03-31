@@ -1,26 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Portfolio — Gabriel Vales Pagcu</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap"
+    rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-    :root {
+    :root,
+    [data-theme="light"] {
       --bg: #fdf8f0;
       --ink: #1a1814;
       --muted: #7a7570;
       --accent: #c8602a;
       --card: #f5efe3;
       --border: #e8e0d0;
+      --nav-bg: rgba(253, 248, 240, 0.90);
       --serif: 'DM Serif Display', Georgia, serif;
       --mono: 'DM Mono', 'Courier New', monospace;
     }
 
-    html { scroll-behavior: smooth; }
+    [data-theme="dark"] {
+      --bg: #080c14;
+      --ink: #e8e4dc;
+      --muted: #6a7485;
+      --accent: #e07a45;
+      --card: #0e1420;
+      --border: #1c2535;
+      --nav-bg: rgba(8, 12, 20, 0.90);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
 
     body {
       background: var(--bg);
@@ -29,76 +52,158 @@
       font-size: 14px;
       line-height: 1.7;
       min-height: 100vh;
+      overflow-x: hidden;
+      transition: background 0.5s ease, color 0.5s ease;
     }
 
-    /* ── NAV ── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1.4rem 3rem;
-      background: rgba(253,248,240,0.88);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
+    #starfield {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.9s ease;
     }
+
+    [data-theme="dark"] #starfield {
+      opacity: 1;
+    }
+
+    nav,
+    section,
+    footer {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.4rem 3rem;
+      background: var(--nav-bg);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.5s, border-color 0.5s;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
     .nav-logo {
       font-family: var(--serif);
       font-size: 1.2rem;
       color: var(--ink);
       text-decoration: none;
       letter-spacing: -0.02em;
+      transition: color 0.3s;
     }
-    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
     .nav-links a {
-      font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--muted); text-decoration: none;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
       transition: color 0.2s;
     }
-    .nav-links a:hover { color: var(--ink); }
 
-    /* ── SECTIONS ── */
-    section { padding: 7rem 3rem 5rem; max-width: 1100px; margin: 0 auto; }
+    .nav-links a:hover {
+      color: var(--ink);
+    }
 
-    /* ── HOME ── */
+    /* THEME TOGGLE */
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      border: none;
+      background: none;
+      padding: 0.2rem;
+    }
+
+    .toggle-track {
+      width: 44px;
+      height: 24px;
+      border-radius: 12px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      position: relative;
+      transition: background 0.4s, border-color 0.4s;
+    }
+
+    [data-theme="dark"] .toggle-track {
+      background: #192340;
+      border-color: #2a3a60;
+    }
+
+    .toggle-thumb {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--muted);
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), background 0.35s;
+    }
+
+    [data-theme="dark"] .toggle-thumb {
+      transform: translateX(20px);
+      background: var(--accent);
+    }
+
+    .toggle-icon {
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    /* SECTIONS */
+    section {
+      padding: 7rem 3rem 5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* HOME */
     #home {
       min-height: 100vh;
-      display: flex; flex-direction: row; align-items: center; justify-content: space-between;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
       gap: 4rem;
       padding-top: 9rem;
     }
-    .home-content { flex: 1; }
-    .home-photo {
-      flex-shrink: 0;
-      width: 280px; height: 340px;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      background: var(--card);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 0.75rem;
-      position: relative;
-      overflow: hidden;
+
+    .home-content {
+      flex: 1;
     }
-    .home-photo::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: repeating-linear-gradient(
-        45deg, transparent, transparent 8px,
-        rgba(0,0,0,0.025) 8px, rgba(0,0,0,0.025) 9px
-      );
-    }
-    .home-photo svg { opacity: 0.35; z-index: 1; }
-    .home-photo span {
-      font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
-      color: var(--muted); opacity: 0.6; z-index: 1;
-    }
-    .home-photo-label {
-      position: absolute; bottom: 1rem;
-      font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--accent); opacity: 0.7; z-index: 1;
-    }
+
     .home-eyebrow {
-      font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--accent); margin-bottom: 1.4rem;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.4rem;
     }
+
     .home-name {
       font-family: var(--serif);
       font-size: clamp(3rem, 8vw, 6.5rem);
@@ -106,7 +211,12 @@
       letter-spacing: -0.03em;
       margin-bottom: 1.8rem;
     }
-    .home-name em { font-style: italic; color: var(--accent); }
+
+    .home-name em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
     .home-bio {
       max-width: 520px;
       color: var(--muted);
@@ -114,464 +224,926 @@
       line-height: 1.8;
       margin-bottom: 3rem;
     }
-    .social-links { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .social-links {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
     .social-link {
-      display: inline-flex; align-items: center; gap: 0.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
       padding: 0.55rem 1.2rem;
       border: 1px solid var(--border);
       border-radius: 2px;
-      font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
-      color: var(--muted); text-decoration: none;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
       transition: all 0.2s;
     }
-    .social-link:hover {
-      border-color: var(--accent); color: var(--accent);
-      background: rgba(200,96,42,0.05);
-    }
-    .social-link svg { width: 14px; height: 14px; }
 
-    /* ── DIVIDER ── */
-    .section-label {
-      font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--accent); margin-bottom: 1rem;
+    .social-link:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(200, 96, 42, 0.06);
     }
+
+    .social-link svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* PHOTO */
+    .home-photo {
+      flex-shrink: 0;
+      width: 280px;
+      height: 340px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: var(--card);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.5s, border-color 0.5s;
+    }
+
+    .home-photo::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(128, 128, 128, 0.04) 8px, rgba(128, 128, 128, 0.04) 9px);
+    }
+
+    .home-photo svg {
+      opacity: 0.3;
+      z-index: 1;
+    }
+
+    .home-photo span {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0.55;
+      z-index: 1;
+    }
+
+    .home-photo-label {
+      position: absolute;
+      bottom: 1rem;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      opacity: 0.65;
+      z-index: 1;
+    }
+
+    /* SECTION HEADERS */
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
     .section-title {
       font-family: var(--serif);
       font-size: clamp(2rem, 4vw, 3rem);
       letter-spacing: -0.02em;
       margin-bottom: 3rem;
     }
-    hr.rule { border: none; border-top: 1px solid var(--border); margin-bottom: 3rem; }
 
-    /* ── EXPERIENCE ── */
-    .exp-list { display: flex; flex-direction: column; gap: 0; }
+    hr.rule {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin-bottom: 3rem;
+    }
+
+    /* EXPERIENCE */
+    .exp-list {
+      display: flex;
+      flex-direction: column;
+    }
+
     .exp-item {
-      display: grid; grid-template-columns: 160px 1fr;
-      gap: 2rem; padding: 2rem 0;
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 2rem;
+      padding: 2rem 0;
       border-bottom: 1px solid var(--border);
     }
-    .exp-item:first-child { border-top: 1px solid var(--border); }
-    .exp-period { color: var(--muted); font-size: 12px; padding-top: 0.2rem; }
-    .exp-role { font-family: var(--serif); font-size: 1.25rem; margin-bottom: 0.25rem; }
-    .exp-company { color: var(--accent); font-size: 12px; letter-spacing: 0.06em; margin-bottom: 0.75rem; }
-    .exp-desc { color: var(--muted); font-size: 13px; max-width: 520px; }
-    .exp-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.8rem; }
-    .tag {
-      font-size: 11px; letter-spacing: 0.06em;
-      padding: 0.2rem 0.6rem;
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 2px; color: var(--muted);
+
+    .exp-item:first-child {
+      border-top: 1px solid var(--border);
     }
 
-    /* ── PROJECTS ── */
-    .projects-grid { display: flex; flex-direction: column; gap: 3rem; }
+    .exp-period {
+      color: var(--muted);
+      font-size: 12px;
+      padding-top: 0.2rem;
+    }
+
+    .exp-role {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .exp-company {
+      color: var(--accent);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.75rem;
+    }
+
+    .exp-desc {
+      color: var(--muted);
+      font-size: 13px;
+      max-width: 520px;
+    }
+
+    .exp-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.8rem;
+    }
+
+    .tag {
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      padding: 0.2rem 0.6rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--muted);
+      transition: background 0.4s, border-color 0.4s;
+    }
+
+    /* PROJECTS */
+    .projects-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+    }
+
     .project-card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 4px;
       overflow: hidden;
-      display: grid; grid-template-columns: 1fr 1fr;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      transition: background 0.5s, border-color 0.5s;
     }
-    .project-card:nth-child(even) { direction: rtl; }
-    .project-card:nth-child(even) > * { direction: ltr; }
+
+    .project-card:nth-child(even) {
+      direction: rtl;
+    }
+
+    .project-card:nth-child(even)>* {
+      direction: ltr;
+    }
 
     /* Slideshow */
     .slideshow {
-      position: relative; overflow: hidden;
-      background: #1a1814;
+      position: relative;
+      overflow: hidden;
+      background: #090d15;
       min-height: 280px;
     }
-    .slides { display: flex; transition: transform 0.5s cubic-bezier(0.4,0,0.2,1); height: 100%; }
-    .slide {
-      min-width: 100%; height: 100%;
-      display: flex; align-items: center; justify-content: center;
-      font-family: var(--serif); font-size: 1.1rem; color: rgba(255,255,255,0.15);
-      position: relative;
+
+    .slides {
+      display: flex;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      height: 100%;
     }
-    /* Decorative placeholder slides */
-    .slide-1 { background: linear-gradient(135deg, #1e1b16 0%, #2a2420 100%); }
-    .slide-2 { background: linear-gradient(135deg, #1c1e24 0%, #1a2030 100%); }
-    .slide-3 { background: linear-gradient(135deg, #1e1c18 0%, #28241c 100%); }
-    .slide-4 { background: linear-gradient(135deg, #181e1c 0%, #1c2820 100%); }
+
+    .slide {
+      min-width: 100%;
+      height: 100%;
+      min-height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .s-a {
+      background: linear-gradient(135deg, #1a1510, #2a1f15);
+    }
+
+    .s-b {
+      background: linear-gradient(135deg, #101520, #182030);
+    }
+
+    .s-c {
+      background: linear-gradient(135deg, #101a14, #182818);
+    }
+
+    .s-d {
+      background: linear-gradient(135deg, #1a1018, #281820);
+    }
+
+    .s-e {
+      background: linear-gradient(135deg, #191410, #2c2010);
+    }
+
+    .s-f {
+      background: linear-gradient(135deg, #0e1520, #141c2e);
+    }
 
     .slide-placeholder {
-      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
-      color: rgba(255,255,255,0.18);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
     }
-    .slide-placeholder svg { opacity: 0.25; }
-    .slide-placeholder span { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+
+    .slide-placeholder svg {
+      opacity: 0.22;
+    }
+
+    .slide-placeholder span {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.2);
+    }
 
     .slide-nav {
-      position: absolute; bottom: 0.9rem; left: 0; right: 0;
-      display: flex; align-items: center; justify-content: center; gap: 0.6rem; z-index: 2;
+      position: absolute;
+      bottom: 0.9rem;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      z-index: 2;
     }
+
     .slide-btn {
-      width: 28px; height: 28px; border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.2);
-      background: rgba(0,0,0,0.4); color: white;
-      cursor: pointer; display: flex; align-items: center; justify-content: center;
-      font-size: 12px; transition: all 0.2s; line-height: 1;
-    }
-    .slide-btn:hover { background: var(--accent); border-color: var(--accent); }
-    .slide-dots { display: flex; gap: 5px; }
-    .dot {
-      width: 5px; height: 5px; border-radius: 50%;
-      background: rgba(255,255,255,0.3); cursor: pointer;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(0, 0, 0, 0.45);
+      color: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
       transition: all 0.2s;
     }
-    .dot.active { background: var(--accent); transform: scale(1.3); }
+
+    .slide-btn:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .slide-dots {
+      display: flex;
+      gap: 5px;
+    }
+
+    .dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.28);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .dot.active {
+      background: var(--accent);
+      transform: scale(1.35);
+    }
 
     .slide-counter {
-      position: absolute; top: 0.8rem; right: 0.8rem;
-      font-size: 10px; letter-spacing: 0.1em;
-      color: rgba(255,255,255,0.4); z-index: 2;
+      position: absolute;
+      top: 0.8rem;
+      right: 0.8rem;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: rgba(255, 255, 255, 0.38);
+      z-index: 2;
+    }
+
+    /* YouTube */
+    .yt-wrap {
+      position: relative;
+      width: 100%;
+      min-height: 280px;
+      background: #000;
+    }
+
+    .yt-wrap iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Project 4 logo */
+    .proj-logo-wrap {
+      width: 100%;
+      min-height: 280px;
+      background: var(--card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.5s;
+    }
+
+    .proj-logo-inner {
+      width: 130px;
+      height: 130px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #1a2030, #0d1420);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+    }
+
+    .proj-logo-inner svg {
+      opacity: 0.75;
+    }
+
+    .proj-logo-inner span {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(200, 220, 255, 0.4);
     }
 
     /* Project info */
-    .project-info { padding: 2.2rem; display: flex; flex-direction: column; justify-content: space-between; }
-    .project-number { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.6rem; }
-    .project-title { font-family: var(--serif); font-size: 1.6rem; letter-spacing: -0.02em; margin-bottom: 1rem; }
-    .project-desc { color: var(--muted); font-size: 13px; line-height: 1.75; margin-bottom: 1.5rem; flex: 1; }
-    .project-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
-    .project-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+    .project-info {
+      padding: 2.2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .project-number {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.6rem;
+    }
+
+    .project-title {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+
+    .project-desc {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.75;
+      margin-bottom: 1.5rem;
+      flex: 1;
+    }
+
+    .project-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+
     .project-link {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--accent); text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
       border-bottom: 1px solid transparent;
       transition: border-color 0.2s;
     }
-    .project-link:hover { border-color: var(--accent); }
-    .project-link svg { width: 12px; height: 12px; }
 
-    /* ── FOOTER ── */
-    footer {
-      text-align: center; padding: 3rem;
-      border-top: 1px solid var(--border);
-      color: var(--muted); font-size: 12px; letter-spacing: 0.06em;
+    .project-link:hover {
+      border-color: var(--accent);
     }
-    footer a { color: var(--accent); text-decoration: none; }
 
-    /* ── SCROLL REVEAL ── */
-    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
-    .reveal.visible { opacity: 1; transform: none; }
+    .project-link svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 3rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* REVEAL */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
 
     @media (max-width: 720px) {
-      nav { padding: 1rem 1.5rem; }
-      section { padding: 5rem 1.5rem 3rem; }
-      #home { flex-direction: column-reverse; gap: 2rem; padding-top: 7rem; }
-      .home-photo { width: 120px; height: 148px; align-self: flex-end; }
-      .project-card { grid-template-columns: 1fr; }
-      .project-card:nth-child(even) { direction: ltr; }
-      .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
-      .slideshow { min-height: 220px; }
+      nav {
+        padding: 1rem 1.5rem;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      section {
+        padding: 5rem 1.5rem 3rem;
+      }
+
+      #home {
+        flex-direction: column-reverse;
+        gap: 2rem;
+        padding-top: 7rem;
+      }
+
+      .home-photo {
+        width: 120px;
+        height: 148px;
+        align-self: flex-end;
+      }
+
+      .project-card {
+        grid-template-columns: 1fr;
+      }
+
+      .project-card:nth-child(even) {
+        direction: ltr;
+      }
+
+      .exp-item {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+      }
+
+      .slideshow,
+      .yt-wrap,
+      .proj-logo-wrap {
+        min-height: 200px;
+      }
     }
   </style>
 </head>
+
 <body>
 
-<!-- NAV -->
-<nav>
-  <a class="nav-logo" href="#home">GVP.</a>
-  <ul class="nav-links">
-    <li><a href="#home">Home</a></li>
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#projects">Projects</a></li>
-  </ul>
-</nav>
+  <canvas id="starfield"></canvas>
 
-<!-- ── HOME ── -->
-<section id="home">
-  <div class="home-content">
-  <p class="home-eyebrow">Available for opportunities</p>
-  <h1 class="home-name">Gabriel<br><em>Vales</em><br>Pagcu.</h1>
-  <p class="home-bio">
-    A Computer Science student with experience in backend development, data-driven systems, simulation, and cloud technologies, seeking opportunities to apply technical and problem-solving skills in building scalable, real-world applications while continuously learning and contributing to innovative teams and projects..
-  </p>
-  <div class="social-links">
-    <a class="social-link" href="https://github.com/grabzilla" target="_blank">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-      GitHub
-    </a>
-    <a class="social-link" href="https://www.linkedin.com/in/gabriel-pagcu/" target="_blank">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-      LinkedIn
-    </a>
-    <a class="social-link" href="mailto:gabgab0518@email.com">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
-      Email
-    </a>
-    <a class="social-link" href="https://gvpagcu.jobs180.com/" target="_blank">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
-      Résumé
-    </a>
-  </div>
-  </div><!-- end .home-content -->
+  <!-- NAV -->
+  <nav>
+    <div class="nav-left">
+      <a class="nav-logo" href="#home">GVP.</a>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#projects">Projects</a></li>
+      </ul>
+    </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+      <span class="toggle-icon">☀️</span>
+      <div class="toggle-track">
+        <div class="toggle-thumb"></div>
+      </div>
+      <span class="toggle-icon">🌙</span>
+    </button>
+  </nav>
 
-  <!-- Face photo placeholder -->
-  <div class="home-photo">
-    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1">
-      <circle cx="12" cy="8" r="4.5"/>
-      <path d="M3.5 21c0-4.5 3.8-8 8.5-8s8.5 3.5 8.5 8"/>
-    </svg>
-    <span>Your Photo</span>
-    <span class="home-photo-label">Replace with &lt;img&gt;</span>
-  </div>
+  <!-- HOME -->
+  <section id="home">
+    <div class="home-content">
+      <p class="home-eyebrow">Available for opportunities</p>
+      <h1 class="home-name">Gabriel<br><em>Vales</em><br>Pagcu.</h1>
+      <p class="home-bio"> A Computer Science student with experience in backend development,
+        data-driven systems, simulation, and cloud technologies, seeking opportunities to apply technical
+        and problem-solving skills in building scalable, real-world applications while continuously
+        learning and contributing to innovative teams and projects..
+      </p>
+      <div class="social-links">
+        <a class="social-link" href="https://github.com/grabzilla" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+          </svg>
+          GitHub
+        </a>
+        <a class="social-link" href="https://www.linkedin.com/in/gabriel-pagcu/" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+          </svg>
+          LinkedIn
+        </a>
+        <a class="social-link" href="mailto:gabgab0518@email.com">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+            <polyline points="22,6 12,12 2,6" />
+          </svg>
+          Email
+        </a>
+        <a class="social-link" href="https://gvpagcu.jobs180.com/" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+            <polyline points="14,2 14,8 20,8" />
+          </svg>
+          Résumé
+        </a>
+      </div>
+    </div>
+    <div class="home-photo">
+      <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1">
+        <circle cx="12" cy="8" r="4.5" />
+        <path d="M3.5 21c0-4.5 3.8-8 8.5-8s8.5 3.5 8.5 8" />
+      </svg>
+      <span>Your Photo</span>
+      <span class="home-photo-label">Replace with &lt;img&gt;</span>
+    </div>
+  </section>
 
-</section>
-
-<!-- ── EXPERIENCE ── -->
-<section id="experience">
-  <p class="section-label reveal">02 — Experience</p>
-  <h2 class="section-title reveal">Where I've<br>worked.</h2>
-  <hr class="rule reveal">
-  <div class="exp-list">
-
-    <div class="exp-item reveal">
-      <span class="exp-period"> Nov 2025 — March 2026</span>
-      <div>
-        <p class="exp-role">Quality Assurance/Software Developer</p>
-        <p class="exp-company">BB88 Advertising Digital Solutions · Internship</p>
-        <p class="exp-desc">Supported the development and quality assurance of a company application over a 3-month period, contributing to feature implementation, testing, 
-          and bug resolution to improve performance and user experience. Collaborated with 
-          the team to meet project goals and maintain consistent progress, while also assisting 
-          with day-to-day operational tasks. Gained practical experience in mobile app development, 
-          QA processes, and team-based workflows.</p>
-        <div class="exp-tags">
-          <span class="tag">Figma</span><span class="tag">Unity C#</span><span class="tag">Flutter</span><span class="tag">Quality Testing</span><span class="tag">Software/App Development</span><span class="tag">XAMPP</span>
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <p class="section-label reveal">02 — Experience</p>
+    <h2 class="section-title reveal">Where I've<br>worked.</h2>
+    <hr class="rule reveal">
+    <div class="exp-list">
+      <div class="exp-item reveal">
+        <span class="exp-period">Nov 2025 — March 2026</span>
+        <div>
+          <p class="exp-role">Quality Assurance/Software Developer</p>
+          <p class="exp-company">BB88 Advertising Digital Solutions · Internship</p>
+          <p class="exp-desc">Supported the development and quality assurance of a company application over a 3-month
+            period, contributing to feature implementation, testing,
+            and bug resolution to improve performance and user experience. Collaborated with
+            the team to meet project goals and maintain consistent progress, while also assisting
+            with day-to-day operational tasks. Gained practical experience in mobile app development,
+            QA processes, and team-based workflows.</p>
+          <div class="exp-tags"><span class="tag">Figma</span><span class="tag">Unity C#</span><span
+              class="tag">Flutter</span><span class="tag">Quality Testing</span><span class="tag">Software/App
+              Development</span><span class="tag">XAMPP</span></div>
         </div>
       </div>
     </div>
+  </section>
 
-  </div>
-</section>
+  <!-- PROJECTS -->
+  <section id="projects">
+    <p class="section-label reveal">03 — Projects</p>
+    <h2 class="section-title reveal">Selected<br>work.</h2>
+    <hr class="rule reveal">
+    <div class="projects-grid">
 
-<!-- ── PROJECTS ── -->
-<section id="projects">
-  <p class="section-label reveal">03 — Projects</p>
-  <h2 class="section-title reveal">Selected<br>work.</h2>
-  <hr class="rule reveal">
-  <div class="projects-grid">
-
-    <!-- PROJECT 1 -->
-    <div class="project-card reveal">
-      <div class="slideshow" data-current="0">
-        <div class="slides">
-          <div class="slide slide-1">
-            <div class="slide-placeholder">
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-              <span>Slide 1</span>
+      <!-- PROJECT 1 — 6 slides -->
+      <div class="project-card reveal">
+        <div class="slideshow">
+          <div class="slides">
+            <div class="slide s-a">
+              <div class="slide-placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white"
+                  stroke-width="1.2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <circle cx="8.5" cy="8.5" r="1.5" />
+                  <polyline points="21 15 16 10 5 21" />
+                </svg><span>Slide 1</span></div>
+            </div>
+            <div class="slide s-b">
+              <div class="slide-placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white"
+                  stroke-width="1.2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <circle cx="8.5" cy="8.5" r="1.5" />
+                  <polyline points="21 15 16 10 5 21" />
+                </svg><span>Slide 2</span></div>
+            </div>
+            <div class="slide s-c">
+              <div class="slide-placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white"
+                  stroke-width="1.2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <circle cx="8.5" cy="8.5" r="1.5" />
+                  <polyline points="21 15 16 10 5 21" />
+                </svg><span>Slide 3</span></div>
+            </div>
+            <div class="slide s-d">
+              <div class="slide-placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white"
+                  stroke-width="1.2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <circle cx="8.5" cy="8.5" r="1.5" />
+                  <polyline points="21 15 16 10 5 21" />
+                </svg><span>Slide 4</span></div>
+            </div>
+            <div class="slide s-e">
+              <div class="slide-placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white"
+                  stroke-width="1.2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <circle cx="8.5" cy="8.5" r="1.5" />
+                  <polyline points="21 15 16 10 5 21" />
+                </svg><span>Slide 5</span></div>
+            </div>
+            <div class="slide s-f">
+              <div class="slide-placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white"
+                  stroke-width="1.2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <circle cx="8.5" cy="8.5" r="1.5" />
+                  <polyline points="21 15 16 10 5 21" />
+                </svg><span>Slide 6</span></div>
             </div>
           </div>
-          <div class="slide slide-2">
-            <div class="slide-placeholder">
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-              <span>Slide 2</span>
+          <div class="slide-counter"><span class="cur">1</span> / <span class="tot">6</span></div>
+          <div class="slide-nav">
+            <button class="slide-btn prev">&#8592;</button>
+            <div class="slide-dots"><span class="dot active"></span><span class="dot"></span><span
+                class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+            <button class="slide-btn next">&#8594;</button>
+          </div>
+        </div>
+        <div class="project-info">
+          <div>
+            <p class="project-number">Project 01</p>
+            <h3 class="project-title">Project Title One</h3>
+            <p class="project-desc">A concise yet compelling description of what this project is, the problem it solves,
+              and your specific role or contribution. Mention the impact or results if available.</p>
+          </div>
+          <div class="project-footer">
+            <div class="project-tags"><span class="tag">React</span><span class="tag">Figma</span><span
+                class="tag">API</span></div><a class="project-link" href="https://your-project-link.com"
+              target="_blank">View project <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROJECT 2 — 5 slides -->
+      <div class="project-card reveal">
+        <div class="slideshow">
+          <div class="slides">
+            <div class="slide s-f">
+              <div class="slide-placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white"
+                  stroke-width="1.2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <circle cx="8.5" cy="8.5" r="1.5" />
+                  <polyline points="21 15 16 10 5 21" />
+                </svg><span>Slide 1</span></div>
+            </div>
+            <div class="slide s-c">
+              <div class="slide-placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white"
+                  stroke-width="1.2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <circle cx="8.5" cy="8.5" r="1.5" />
+                  <polyline points="21 15 16 10 5 21" />
+                </svg><span>Slide 2</span></div>
+            </div>
+            <div class="slide s-a">
+              <div class="slide-placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white"
+                  stroke-width="1.2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <circle cx="8.5" cy="8.5" r="1.5" />
+                  <polyline points="21 15 16 10 5 21" />
+                </svg><span>Slide 3</span></div>
+            </div>
+            <div class="slide s-e">
+              <div class="slide-placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white"
+                  stroke-width="1.2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <circle cx="8.5" cy="8.5" r="1.5" />
+                  <polyline points="21 15 16 10 5 21" />
+                </svg><span>Slide 4</span></div>
+            </div>
+            <div class="slide s-d">
+              <div class="slide-placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white"
+                  stroke-width="1.2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <circle cx="8.5" cy="8.5" r="1.5" />
+                  <polyline points="21 15 16 10 5 21" />
+                </svg><span>Slide 5</span></div>
             </div>
           </div>
-          <div class="slide slide-3">
-            <div class="slide-placeholder">
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-              <span>Slide 3</span>
-            </div>
+          <div class="slide-counter"><span class="cur">1</span> / <span class="tot">5</span></div>
+          <div class="slide-nav">
+            <button class="slide-btn prev">&#8592;</button>
+            <div class="slide-dots"><span class="dot active"></span><span class="dot"></span><span
+                class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+            <button class="slide-btn next">&#8594;</button>
           </div>
         </div>
-        <div class="slide-counter"><span class="cur">1</span> / <span class="tot">3</span></div>
-        <div class="slide-nav">
-          <button class="slide-btn prev" aria-label="Previous">&#8592;</button>
-          <div class="slide-dots">
-            <span class="dot active"></span><span class="dot"></span><span class="dot"></span>
+        <div class="project-info">
+          <div>
+            <p class="project-number">Project 02</p>
+            <h3 class="project-title">Project Title Two</h3>
+            <p class="project-desc">Describe the challenge, your approach, and the outcome. What technologies did you
+              use? What was unique about your solution? Keep it punchy and results-oriented.</p>
           </div>
-          <button class="slide-btn next" aria-label="Next">&#8594;</button>
+          <div class="project-footer">
+            <div class="project-tags"><span class="tag">Python</span><span class="tag">Data Viz</span><span
+                class="tag">ML</span></div><a class="project-link" href="https://your-project-link.com"
+              target="_blank">View project <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg></a>
+          </div>
         </div>
       </div>
-      <div class="project-info">
-        <div>
-          <p class="project-number">Project 01</p>
-          <h3 class="project-title">Project Title One</h3>
-          <p class="project-desc">
-            A concise yet compelling description of what this project is, the problem it solves, and your specific role or contribution. Mention the impact or results if available.
-          </p>
+
+      <!-- PROJECT 3 — YouTube embed -->
+      <div class="project-card reveal">
+        <div class="yt-wrap">
+          <iframe src="https://www.youtube.com/embed/p8qc_Aj8XGo" title="Project 3 Demo"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
         </div>
-        <div class="project-footer">
-          <div class="project-tags">
-            <span class="tag">React</span><span class="tag">Figma</span><span class="tag">API</span>
+        <div class="project-info">
+          <div>
+            <p class="project-number">Project 03</p>
+            <h3 class="project-title">Project Title Three</h3>
+            <p class="project-desc">Another compelling story about your work. Think about what makes this project
+              memorable — the scope, the creativity, the technical difficulty, or the real-world value it created.</p>
           </div>
-          <a class="project-link" href="https://your-project-link.com" target="_blank">
-            View project
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          </a>
+          <div class="project-footer">
+            <div class="project-tags"><span class="tag">Node.js</span><span class="tag">PostgreSQL</span><span
+                class="tag">Docker</span></div><a class="project-link" href="https://your-project-link.com"
+              target="_blank">View project <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg></a>
+          </div>
         </div>
       </div>
+
+      <!-- PROJECT 4 — Logo only -->
+      <div class="project-card reveal">
+        <div class="proj-logo-wrap">
+          <div class="proj-logo-inner">
+            <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.1">
+              <polygon
+                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+            </svg>
+            <span>Logo</span>
+          </div>
+        </div>
+        <div class="project-info">
+          <div>
+            <p class="project-number">Project 04</p>
+            <h3 class="project-title">Project Title Four</h3>
+            <p class="project-desc">Final project description. Consider ending your projects section with something that
+              shows range — a different type, scale, or domain than the others.</p>
+          </div>
+          <div class="project-footer">
+            <div class="project-tags"><span class="tag">TypeScript</span><span class="tag">Next.js</span><span
+                class="tag">AWS</span></div><a class="project-link" href="https://your-project-link.com"
+              target="_blank">View project <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg></a>
+          </div>
+        </div>
+      </div>
+
     </div>
+  </section>
 
-    <!-- PROJECT 2 -->
-    <div class="project-card reveal">
-      <div class="slideshow" data-current="0">
-        <div class="slides">
-          <div class="slide slide-2"><div class="slide-placeholder"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Slide 1</span></div></div>
-          <div class="slide slide-4"><div class="slide-placeholder"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Slide 2</span></div></div>
-          <div class="slide slide-1"><div class="slide-placeholder"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Slide 3</span></div></div>
-          <div class="slide slide-3"><div class="slide-placeholder"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Slide 4</span></div></div>
-        </div>
-        <div class="slide-counter"><span class="cur">1</span> / <span class="tot">4</span></div>
-        <div class="slide-nav">
-          <button class="slide-btn prev">&#8592;</button>
-          <div class="slide-dots">
-            <span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
-          </div>
-          <button class="slide-btn next">&#8594;</button>
-        </div>
-      </div>
-      <div class="project-info">
-        <div>
-          <p class="project-number">Project 02</p>
-          <h3 class="project-title">Project Title Two</h3>
-          <p class="project-desc">
-            Describe the challenge, your approach, and the outcome. What technologies did you use? What was unique about your solution? Keep it punchy and results-oriented.
-          </p>
-        </div>
-        <div class="project-footer">
-          <div class="project-tags">
-            <span class="tag">Python</span><span class="tag">Data Viz</span><span class="tag">ML</span>
-          </div>
-          <a class="project-link" href="https://your-project-link.com" target="_blank">
-            View project
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          </a>
-        </div>
-      </div>
-    </div>
+  <footer>
+    <p>Designed & built by <a href="#home">Gabriel Vales Pagcu</a> · <a
+        href="https://github.com/grabzilla/grabzilla.github.io" target="_blank">View source</a></p>
+  </footer>
 
-    <!-- PROJECT 3 -->
-    <div class="project-card reveal">
-      <div class="slideshow" data-current="0">
-        <div class="slides">
-          <div class="slide slide-3"><div class="slide-placeholder"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Slide 1</span></div></div>
-          <div class="slide slide-1"><div class="slide-placeholder"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Slide 2</span></div></div>
-        </div>
-        <div class="slide-counter"><span class="cur">1</span> / <span class="tot">2</span></div>
-        <div class="slide-nav">
-          <button class="slide-btn prev">&#8592;</button>
-          <div class="slide-dots">
-            <span class="dot active"></span><span class="dot"></span>
-          </div>
-          <button class="slide-btn next">&#8594;</button>
-        </div>
-      </div>
-      <div class="project-info">
-        <div>
-          <p class="project-number">Project 03</p>
-          <h3 class="project-title">Project Title Three</h3>
-          <p class="project-desc">
-            Another compelling story about your work. Think about what makes this project memorable — the scope, the creativity, the technical difficulty, or the real-world value it created.
-          </p>
-        </div>
-        <div class="project-footer">
-          <div class="project-tags">
-            <span class="tag">Node.js</span><span class="tag">PostgreSQL</span><span class="tag">Docker</span>
-          </div>
-          <a class="project-link" href="https://your-project-link.com" target="_blank">
-            View project
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          </a>
-        </div>
-      </div>
-    </div>
+  <script>
+    // ── STARFIELD ──
+    (function () {
+      const canvas = document.getElementById('starfield');
+      const ctx = canvas.getContext('2d');
+      let W, H, stars = [], shooters = [];
 
-    <!-- PROJECT 4 -->
-    <div class="project-card reveal">
-      <div class="slideshow" data-current="0">
-        <div class="slides">
-          <div class="slide slide-4"><div class="slide-placeholder"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Slide 1</span></div></div>
-          <div class="slide slide-2"><div class="slide-placeholder"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Slide 2</span></div></div>
-          <div class="slide slide-1"><div class="slide-placeholder"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Slide 3</span></div></div>
-        </div>
-        <div class="slide-counter"><span class="cur">1</span> / <span class="tot">3</span></div>
-        <div class="slide-nav">
-          <button class="slide-btn prev">&#8592;</button>
-          <div class="slide-dots">
-            <span class="dot active"></span><span class="dot"></span><span class="dot"></span>
-          </div>
-          <button class="slide-btn next">&#8594;</button>
-        </div>
-      </div>
-      <div class="project-info">
-        <div>
-          <p class="project-number">Project 04</p>
-          <h3 class="project-title">Project Title Four</h3>
-          <p class="project-desc">
-            Final project description. Consider ending your projects section with something that shows range — a different type, scale, or domain than the others.
-          </p>
-        </div>
-        <div class="project-footer">
-          <div class="project-tags">
-            <span class="tag">TypeScript</span><span class="tag">Next.js</span><span class="tag">AWS</span>
-          </div>
-          <a class="project-link" href="https://your-project-link.com" target="_blank">
-            View project
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          </a>
-        </div>
-      </div>
-    </div>
+      function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+      resize();
+      window.addEventListener('resize', resize);
 
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <p>Designed & built by <a href="#home">Your Name</a> · <a href="https://github.com/yourusername/yourusername.github.io" target="_blank">View source</a></p>
-</footer>
-
-<script>
-  // ── SLIDESHOW ENGINE ──
-  document.querySelectorAll('.slideshow').forEach(show => {
-    const slides = show.querySelector('.slides');
-    const dots   = show.querySelectorAll('.dot');
-    const cur    = show.querySelector('.cur');
-    const total  = dots.length;
-    let idx = 0;
-
-    const goTo = n => {
-      idx = ((n % total) + total) % total; // loop
-      slides.style.transform = `translateX(-${idx * 100}%)`;
-      dots.forEach((d,i) => d.classList.toggle('active', i === idx));
-      cur.textContent = idx + 1;
-    };
-
-    show.querySelector('.next').addEventListener('click', () => goTo(idx + 1));
-    show.querySelector('.prev').addEventListener('click', () => goTo(idx - 1));
-    dots.forEach((d, i) => d.addEventListener('click', () => goTo(i)));
-
-    // Touch swipe support
-    let startX = 0;
-    slides.addEventListener('touchstart', e => startX = e.touches[0].clientX, { passive: true });
-    slides.addEventListener('touchend', e => {
-      const dx = e.changedTouches[0].clientX - startX;
-      if (Math.abs(dx) > 40) goTo(dx < 0 ? idx + 1 : idx - 1);
-    });
-  });
-
-  // ── SCROLL REVEAL ──
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
-  // ── NAV active highlight ──
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-links a');
-  const spy = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        navLinks.forEach(a => a.style.color = '');
-        const active = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
-        if (active) active.style.color = 'var(--ink)';
+      function mkStar() {
+        return { x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.1 + 0.2, a: Math.random() * 0.65 + 0.12, phase: Math.random() * Math.PI * 2, speed: Math.random() * 0.018 + 0.004 };
       }
+      function mkShooter() {
+        const a = (Math.random() * 25 + 8) * Math.PI / 180;
+        return { x: Math.random() * W * 0.7, y: Math.random() * H * 0.35, vx: Math.cos(a) * 13, vy: Math.sin(a) * 13, life: 1, decay: Math.random() * 0.014 + 0.007, len: Math.random() * 90 + 55 };
+      }
+      for (let i = 0; i < 200; i++) stars.push(mkStar());
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        stars.forEach(s => {
+          s.phase += s.speed;
+          const alpha = s.a * (0.65 + 0.35 * Math.sin(s.phase));
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(210,225,255,${alpha})`;
+          ctx.fill();
+        });
+        if (Math.random() < 0.005) shooters.push(mkShooter());
+        shooters = shooters.filter(s => s.life > 0);
+        shooters.forEach(s => {
+          const tx = s.x - s.vx * (s.len / 13), ty = s.y - s.vy * (s.len / 13);
+          const g = ctx.createLinearGradient(tx, ty, s.x, s.y);
+          g.addColorStop(0, 'rgba(255,255,255,0)');
+          g.addColorStop(1, `rgba(255,248,220,${s.life * 0.85})`);
+          ctx.beginPath(); ctx.moveTo(tx, ty); ctx.lineTo(s.x, s.y);
+          ctx.strokeStyle = g; ctx.lineWidth = 1.4; ctx.stroke();
+          s.x += s.vx; s.y += s.vy; s.life -= s.decay;
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+
+    // ── THEME TOGGLE ──
+    const html = document.documentElement;
+    const toggleBtn = document.getElementById('themeToggle');
+    const saved = localStorage.getItem('portfolio-theme') || 'light';
+    html.setAttribute('data-theme', saved);
+    toggleBtn.addEventListener('click', () => {
+      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('portfolio-theme', next);
     });
-  }, { threshold: 0.4 });
-  sections.forEach(s => spy.observe(s));
-</script>
+
+    // ── SLIDESHOW ──
+    document.querySelectorAll('.slideshow').forEach(show => {
+      const slides = show.querySelector('.slides');
+      const dots = show.querySelectorAll('.dot');
+      const cur = show.querySelector('.cur');
+      const total = dots.length;
+      let idx = 0;
+      const goTo = n => {
+        idx = ((n % total) + total) % total;
+        slides.style.transform = `translateX(-${idx * 100}%)`;
+        dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+        cur.textContent = idx + 1;
+      };
+      show.querySelector('.next').addEventListener('click', () => goTo(idx + 1));
+      show.querySelector('.prev').addEventListener('click', () => goTo(idx - 1));
+      dots.forEach((d, i) => d.addEventListener('click', () => goTo(i)));
+      let sx = 0;
+      slides.addEventListener('touchstart', e => sx = e.touches[0].clientX, { passive: true });
+      slides.addEventListener('touchend', e => { const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 40) goTo(dx < 0 ? idx + 1 : idx - 1); });
+    });
+
+    // ── SCROLL REVEAL ──
+    const obs = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } }), { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+    // ── NAV HIGHLIGHT ──
+    const navAs = document.querySelectorAll('.nav-links a');
+    new IntersectionObserver(entries => entries.forEach(e => {
+      if (e.isIntersecting) { navAs.forEach(a => a.style.color = ''); const a = document.querySelector(`.nav-links a[href="#${e.target.id}"]`); if (a) a.style.color = 'var(--ink)'; }
+    }), { threshold: 0.4 }).observe && document.querySelectorAll('section[id]').forEach(s => new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) { navAs.forEach(a => a.style.color = ''); const a = document.querySelector(`.nav-links a[href="#${e.target.id}"]`); if (a) a.style.color = 'var(--ink)'; } }), { threshold: 0.4 }).observe(s));
+  </script>
 </body>
+
 </html>
