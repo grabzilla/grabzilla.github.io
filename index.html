@@ -736,6 +736,28 @@
         min-height: 200px;
       }
     }
+    .home-photo {
+  flex-shrink: 0;
+  width: 280px;
+  height: 340px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--card);
+  position: relative;
+  overflow: hidden; /* This keeps the image within the rounded corners */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.5s, border-color 0.5s;
+}
+
+/* Ensure the image fills the space without distortion */
+.home-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  display: block;
+}
   </style>
 </head>
 
@@ -804,13 +826,8 @@
       </div>
     </div>
     <div class="home-photo">
-      <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1">
-        <circle cx="12" cy="8" r="4.5" />
-        <path d="M3.5 21c0-4.5 3.8-8 8.5-8s8.5 3.5 8.5 8" />
-      </svg>
-      <span>Your Photo</span>
-      <span class="home-photo-label">Replace with &lt;img&gt;</span>
-    </div>
+  <img src="assets/profilepic1.JPG" alt="Gabriel Vales Pagcu" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+</div>
   </section>
 
   <!-- EXPERIENCE -->
